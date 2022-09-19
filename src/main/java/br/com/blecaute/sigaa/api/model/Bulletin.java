@@ -4,6 +4,7 @@ import br.com.blecaute.sigaa.api.annotation.selector.DateSelector;
 import br.com.blecaute.sigaa.api.annotation.selector.MapSelector;
 import br.com.blecaute.sigaa.api.annotation.selector.Selector;
 import lombok.*;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 import java.util.Map;
@@ -87,10 +88,12 @@ public class Bulletin {
     @RequiredArgsConstructor @Getter
     public enum Situation {
 
-        APPROVED("APROVADO");
+        APPROVED("APROVADO"),
+        REPROVED("REPROVADO");
 
         private final String value;
 
+        @Nullable
         public static Situation parse(String value) {
             for (Situation situation : Situation.values()) {
                 if (situation.value.equalsIgnoreCase(value)) {
