@@ -16,6 +16,9 @@ public class User {
     @Selector(parent = "#perfil-docente", value = "p.info-docente > span")
     private String name;
 
+    @Selector(parent = "#perfil-docente", value = "p.info-docente")
+    private String info;
+
     @Selector(parent = "#perfil-docente", value = "div.pessoal-docente > div.foto > img", attribute = "src")
     private String avatar;
 

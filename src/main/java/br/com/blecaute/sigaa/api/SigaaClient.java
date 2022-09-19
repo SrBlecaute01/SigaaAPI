@@ -7,14 +7,12 @@ import br.com.blecaute.sigaa.api.response.BulletinResponse;
 import br.com.blecaute.sigaa.api.response.ResponseType;
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import okhttp3.OkHttpClient;
 
 import java.util.concurrent.CompletableFuture;
 
 @Data
-@RequiredArgsConstructor
 public class SigaaClient {
 
     private final OkHttpClient httpClient;
