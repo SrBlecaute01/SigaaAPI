@@ -54,13 +54,12 @@ public class SigaaClient {
     }
 
     public CompletableFuture<Path> getHistoric(@NonNull Path target, CopyOption... options) {
-        return getHistoric().handle((bytes, throwable) -> {
-            if (throwable != null) {
-                throw new CompletionException(throwable);
-            }
+        return getHistoric().thenApply(bytes -> {
+            try (ByteArrayInputStream byteArray = new ByteArrayInputStream(bytes);
+                 BufferedInputStream buffered = new BufferedInputStream(byteArray)) {
 
-            try {
-                Files.copy(new BufferedInputStream(new ByteArrayInputStream(bytes)), target, options);
+                Files.copy(buffered, target, options);
+
             } catch (IOException exception) {
                 throw new CompletionException(exception);
             }
