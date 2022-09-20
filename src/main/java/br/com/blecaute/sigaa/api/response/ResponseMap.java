@@ -1,9 +1,6 @@
 package br.com.blecaute.sigaa.api.response;
 
-import br.com.blecaute.sigaa.api.response.impl.BulletinResponseImpl;
-import br.com.blecaute.sigaa.api.response.impl.CookieResponseImpl;
-import br.com.blecaute.sigaa.api.response.impl.DisciplinesResponseImpl;
-import br.com.blecaute.sigaa.api.response.impl.LoginResponseImpl;
+import br.com.blecaute.sigaa.api.response.impl.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -19,6 +16,7 @@ public class ResponseMap {
         RESPONSES.put(ResponseType.LOGIN, new LoginResponseImpl());
         RESPONSES.put(ResponseType.BULLETIN, new BulletinResponseImpl());
         RESPONSES.put(ResponseType.DISCIPLINES, new DisciplinesResponseImpl());
+        RESPONSES.put(ResponseType.HISTORIC, new HistoricResponseImpl());
     }
 
     @NotNull

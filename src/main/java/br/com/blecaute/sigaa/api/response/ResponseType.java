@@ -9,6 +9,7 @@ public enum ResponseType {
     LOGIN,
     BULLETIN,
     DISCIPLINES,
+    HISTORIC,
 
     ;
 
