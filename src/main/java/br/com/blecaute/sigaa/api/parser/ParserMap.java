@@ -1,8 +1,8 @@
 package br.com.blecaute.sigaa.api.parser;
 
 import br.com.blecaute.sigaa.api.model.*;
+import br.com.blecaute.sigaa.api.model.Bulletin;
 import br.com.blecaute.sigaa.api.model.classroom.Attachment;
-import br.com.blecaute.sigaa.api.model.classroom.Classroom;
 import br.com.blecaute.sigaa.api.model.classroom.Lesson;
 import br.com.blecaute.sigaa.api.parser.impl.*;
 import br.com.blecaute.sigaa.api.processor.Processor;

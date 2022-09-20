@@ -1,7 +1,7 @@
 package br.com.blecaute.sigaa.api;
 
 import br.com.blecaute.sigaa.api.model.Bulletin;
-import br.com.blecaute.sigaa.api.model.discipline.Disciplines;
+import br.com.blecaute.sigaa.api.model.Disciplines;
 import br.com.blecaute.sigaa.api.model.User;
 import br.com.blecaute.sigaa.api.parser.ParserMap;
 import br.com.blecaute.sigaa.api.response.BulletinResponse;
