@@ -1,6 +1,7 @@
 package br.com.blecaute.sigaa.api.processor.impl;
 
 import br.com.blecaute.sigaa.api.annotation.selector.CollectionSelector;
+import br.com.blecaute.sigaa.api.annotation.validator.ValidatorMap;
 import br.com.blecaute.sigaa.api.model.classroom.Classroom;
 import br.com.blecaute.sigaa.api.processor.Processor;
 import br.com.blecaute.sigaa.api.parser.ParserMap;

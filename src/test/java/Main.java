@@ -13,7 +13,7 @@ public class Main {
             .build();
 
     public static void main(String[] args) {
-        final var client = new SigaaClient(HTTP_CLIENT, "D046376E90323A3AE0C53133C8DEC826.inst2");
+        final var client = new SigaaClient(HTTP_CLIENT, ".inst2");
         Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
 
         client.getDisciplines().whenComplete((a, b) -> {
