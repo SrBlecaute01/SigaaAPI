@@ -1,17 +1,19 @@
-package br.com.blecaute.sigaa.api.model;
+package br.com.blecaute.sigaa.api.model.discipline;
 
 import br.com.blecaute.sigaa.api.annotation.validator.ClassValidator;
 import br.com.blecaute.sigaa.api.annotation.selector.CollectionSelector;
 import br.com.blecaute.sigaa.api.annotation.selector.MapSelector;
 import br.com.blecaute.sigaa.api.annotation.selector.Selector;
+import br.com.blecaute.sigaa.api.model.DayPeriod;
+import br.com.blecaute.sigaa.api.model.Schedule;
 import lombok.*;
+import org.jetbrains.annotations.Unmodifiable;
 
+import java.util.Collections;
 import java.util.List;
 
-@Data
-@Setter(AccessLevel.NONE)
+@Data @Setter(AccessLevel.NONE)
 @NoArgsConstructor
-@AllArgsConstructor
 @MapSelector.Key("code")
 @ClassValidator("linhaPar|linhaImpar")
 public class Discipline {
@@ -43,4 +45,8 @@ public class Discipline {
     @CollectionSelector(value = "")
     private List<Schedule> schedules;
 
+    @Unmodifiable
+    public List<Schedule> getSchedules() {
+        return Collections.unmodifiableList(schedules);
+    }
 }

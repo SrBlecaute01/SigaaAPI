@@ -1,6 +1,6 @@
 package br.com.blecaute.sigaa.api.parser.impl;
 
-import br.com.blecaute.sigaa.api.model.Discipline;
+import br.com.blecaute.sigaa.api.model.discipline.Discipline;
 import br.com.blecaute.sigaa.api.parser.DisciplineParser;
 import br.com.blecaute.sigaa.api.processor.Processor;
 import org.jetbrains.annotations.NotNull;
