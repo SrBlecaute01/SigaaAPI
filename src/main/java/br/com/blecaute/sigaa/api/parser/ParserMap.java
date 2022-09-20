@@ -1,6 +1,7 @@
 package br.com.blecaute.sigaa.api.parser;
 
 import br.com.blecaute.sigaa.api.model.Bulletin;
+import br.com.blecaute.sigaa.api.model.Discipline;
 import br.com.blecaute.sigaa.api.model.classroom.Attachment;
 import br.com.blecaute.sigaa.api.model.classroom.Classroom;
 import br.com.blecaute.sigaa.api.model.User;
@@ -22,6 +23,7 @@ public class ParserMap {
         parsers.put(Bulletin.class, new BulletinParserImpl());
         parsers.put(Lesson.class, new LessonParserImpl());
         parsers.put(Attachment.class, new AttachmentParserImpl());
+        parsers.put(Discipline.class, new DisciplineParserImpl());
     }
 
     public static <T> T parse(Class<T> clazz, Element element) {

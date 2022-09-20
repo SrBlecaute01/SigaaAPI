@@ -1,9 +1,11 @@
 package br.com.blecaute.sigaa.api;
 
 import br.com.blecaute.sigaa.api.model.Bulletin;
+import br.com.blecaute.sigaa.api.model.Disciplines;
 import br.com.blecaute.sigaa.api.model.User;
 import br.com.blecaute.sigaa.api.parser.ParserMap;
 import br.com.blecaute.sigaa.api.response.BulletinResponse;
+import br.com.blecaute.sigaa.api.response.DisciplinesResponse;
 import br.com.blecaute.sigaa.api.response.ResponseType;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -25,6 +27,13 @@ public class SigaaClient {
         return CompletableFuture.supplyAsync(() -> {
             BulletinResponse response = ResponseType.BULLETIN.getResponse();
             return ParserMap.parse(Bulletin.class, response.getBulletin(httpClient, cookie));
+        });
+    }
+
+    public CompletableFuture<Disciplines> getDisciplines() {
+        return CompletableFuture.supplyAsync(() -> {
+            DisciplinesResponse response = ResponseType.DISCIPLINES.getResponse();
+            return ParserMap.parse(Disciplines.class, response.getDisciplines(httpClient, cookie));
         });
     }
 

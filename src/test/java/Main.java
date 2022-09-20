@@ -1,6 +1,4 @@
 import br.com.blecaute.sigaa.api.SigaaClient;
-import br.com.blecaute.sigaa.api.response.BulletinResponse;
-import br.com.blecaute.sigaa.api.response.impl.BulletinResponseImpl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import okhttp3.OkHttpClient;
@@ -15,19 +13,18 @@ public class Main {
             .build();
 
     public static void main(String[] args) {
-        final var client = new SigaaClient(HTTP_CLIENT, "");
+        final var client = new SigaaClient(HTTP_CLIENT, "D046376E90323A3AE0C53133C8DEC826.inst2");
         Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
 
-        client.getBulletin().whenComplete((a, b) -> {
+        client.getDisciplines().whenComplete((a, b) -> {
             if (b != null) {
                 b.printStackTrace();
                 return;
             }
 
-            System.out.println(a);
-
             System.out.println(gson.toJson(a));
         });
+
     }
 
 }

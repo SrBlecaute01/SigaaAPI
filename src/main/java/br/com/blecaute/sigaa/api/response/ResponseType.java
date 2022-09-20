@@ -7,7 +7,8 @@ public enum ResponseType {
 
     COOKIE,
     LOGIN,
-    BULLETIN;
+    BULLETIN,
+    DISCIPLINES,
 
     ;
 
