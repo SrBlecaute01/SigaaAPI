@@ -10,6 +10,7 @@ public enum ResponseType {
     BULLETIN,
     DISCIPLINES,
     HISTORIC,
+    ENROLLMENT_STATEMENT,
 
     ;
 

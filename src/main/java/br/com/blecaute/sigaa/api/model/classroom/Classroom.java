@@ -7,11 +7,8 @@ import lombok.*;
 
 import java.util.List;
 
-@Data
-@Setter(AccessLevel.NONE)
+@Data @Setter(AccessLevel.NONE)
 @NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class Classroom {
 
     @Selector(value = "#linkCodigoTurma", exclusion = "\\W+")

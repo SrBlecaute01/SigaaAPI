@@ -4,15 +4,13 @@ import br.com.blecaute.sigaa.api.model.Bulletin;
 import br.com.blecaute.sigaa.api.model.Disciplines;
 import br.com.blecaute.sigaa.api.model.User;
 import br.com.blecaute.sigaa.api.parser.ParserMap;
-import br.com.blecaute.sigaa.api.response.BulletinResponse;
-import br.com.blecaute.sigaa.api.response.DisciplinesResponse;
-import br.com.blecaute.sigaa.api.response.HistoricResponse;
-import br.com.blecaute.sigaa.api.response.ResponseType;
+import br.com.blecaute.sigaa.api.response.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.Setter;
 import okhttp3.OkHttpClient;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -55,21 +53,38 @@ public class SigaaClient {
 
     public CompletableFuture<Path> getHistoric(@NonNull Path target, CopyOption... options) {
         return getHistoric().thenApply(bytes -> {
-            try (ByteArrayInputStream byteArray = new ByteArrayInputStream(bytes);
-                 BufferedInputStream buffered = new BufferedInputStream(byteArray)) {
-
-                Files.copy(buffered, target, options);
-
+            try {
+                return copyFile(target, bytes, options);
             } catch (IOException exception) {
                 throw new CompletionException(exception);
             }
-
-            return target;
         });
     }
 
-    public CompletableFuture<User> refreshUser() {
-        return null;
+    public CompletableFuture<byte[]> getEnrollmentStatement() {
+        return CompletableFuture.supplyAsync(() -> {
+            EnrollmentStatementResponse response = ResponseType.ENROLLMENT_STATEMENT.getResponse();
+            return response.getEnrollmentStatement(httpClient, cookie);
+        });
     }
 
+    public CompletableFuture<Path> getEnrollmentStatement(@NonNull Path target, CopyOption... options) {
+        return getEnrollmentStatement().thenApply(bytes -> {
+            try {
+                return copyFile(target, bytes, options);
+            } catch (IOException exception) {
+                throw new CompletionException(exception);
+            }
+        });
+    }
+
+    private Path copyFile(@NotNull Path target, byte[] bytes, CopyOption... options) throws IOException {
+        try (ByteArrayInputStream byteArray = new ByteArrayInputStream(bytes);
+             BufferedInputStream buffered = new BufferedInputStream(byteArray)) {
+
+            Files.copy(buffered, target, options);
+        }
+
+        return target;
+    }
 }
