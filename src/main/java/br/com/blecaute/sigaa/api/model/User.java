@@ -10,28 +10,28 @@ import org.jetbrains.annotations.Nullable;
 @Setter(AccessLevel.NONE)
 public class User {
 
-    @Selector(parent = "#agenda-docente > table > tbody", value = "tr:nth-child(1) > td:nth-child(2)")
+    @Selector(value = "#agenda-docente > table > tbody > tr:nth-child(1) > td:nth-child(2)")
     private int registration;
 
-    @Selector(parent = "#perfil-docente", value = "p.info-docente > span")
+    @Selector(value = "#perfil-docente > p.info-docente > span")
     private String name;
 
-    @Selector(parent = "#perfil-docente", value = "p.info-docente")
+    @Selector(value = "#perfil-docente > p.info-docente")
     private String info;
 
-    @Selector(parent = "#perfil-docente", value = "div.pessoal-docente > div.foto > img", attr = "src")
+    @Selector(value = "#perfil-docente > div.pessoal-docente > div.foto > img", attr = "src")
     private String avatar;
 
     @Selector("#info-usuario > p.periodo-atual > strong")
     private String semester;
 
-    @Selector(parent = "#agenda-docente > table > tbody", value = "tr:nth-child(2) > td:nth-child(2)")
+    @Selector(value = "#agenda-docente > table > tbody > tr:nth-child(2) > td:nth-child(2)")
     private String course;
 
-    @Selector(parent = "#agenda-docente > table > tbody", value = "tr:nth-child(4) > td:nth-child(2)")
+    @Selector(value = "#agenda-docente > table > tbody > tr:nth-child(4) > td:nth-child(2)")
     private Status status;
 
-    @Selector(parent = "#agenda-docente > table > tbody", value = "tr:nth-child(6) > td:nth-child(2)")
+    @Selector(value = "#agenda-docente > table > tbody > tr:nth-child(6) > td:nth-child(2)")
     private String entryYear;
 
     @RequiredArgsConstructor

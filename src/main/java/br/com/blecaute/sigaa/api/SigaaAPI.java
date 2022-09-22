@@ -1,7 +1,7 @@
 package br.com.blecaute.sigaa.api;
 
 import br.com.blecaute.sigaa.api.model.User;
-import br.com.blecaute.sigaa.api.parser.ParserMap;
+import br.com.blecaute.sigaa.api.mapper.Mappers;
 import br.com.blecaute.sigaa.api.response.CookieResponse;
 import br.com.blecaute.sigaa.api.response.LoginResponse;
 import br.com.blecaute.sigaa.api.response.ResponseType;
@@ -33,7 +33,7 @@ public class SigaaAPI {
             LoginResponse loginResponse = ResponseType.LOGIN.getResponse();
             Document document = loginResponse.login(HTTP_CLIENT, cookie, username, password);
 
-            client.setUser(ParserMap.parse(User.class, document));
+            client.setUser(Mappers.map(User.class, document));
 
             return client;
         });

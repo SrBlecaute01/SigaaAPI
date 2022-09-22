@@ -28,7 +28,7 @@ public class VirtualClassResponseImpl implements VirtualClassResponse {
         final var formBody = new FormBody.Builder()
                 .add("j_id_jsp_1186832992_2", "j_id_jsp_1186832992_2")
                 .add("j_id_jsp_1186832992_2:" + id, "j_id_jsp_1186832992_2:" + id)
-                .add("javax.faces.ViewState", "j_id94")
+                .add("javax.faces.ViewState", "j_id4")
                 .build();
 
         return validate(getResponse(client, cookie, formBody));

@@ -1,8 +1,8 @@
-package br.com.blecaute.sigaa.api.parser.impl;
+package br.com.blecaute.sigaa.api.mapper.impl;
 
 import br.com.blecaute.sigaa.api.model.DayPeriod;
 import br.com.blecaute.sigaa.api.model.Schedule;
-import br.com.blecaute.sigaa.api.parser.ScheduleParser;
+import br.com.blecaute.sigaa.api.mapper.ScheduleMapper;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Element;
 
@@ -10,10 +10,10 @@ import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScheduleParserImpl implements ScheduleParser {
+public class ScheduleMapperImpl implements ScheduleMapper {
 
     @Override
-    public Schedule parse(@NotNull Element element) {
+    public Schedule map(@NotNull Element element) {
         String[] values = element.text().split(" ");
         for (String value : values) {
             DayOfWeek day = DayOfWeek.of(Integer.parseInt(String.valueOf(value.charAt(0))));

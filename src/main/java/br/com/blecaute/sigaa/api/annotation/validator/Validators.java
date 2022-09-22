@@ -1,6 +1,5 @@
 package br.com.blecaute.sigaa.api.annotation.validator;
 
-import br.com.blecaute.sigaa.api.annotation.validator.annotation.ClassValidator;
 import br.com.blecaute.sigaa.api.annotation.validator.impl.ClassValidatorImpl;
 import lombok.NonNull;
 import org.jsoup.nodes.Element;
@@ -14,10 +13,9 @@ import java.util.Map;
 /**
  * This class is responsible for validating the annotations
  */
-@SuppressWarnings("rawtypes")
 public class Validators {
 
-    private static final Map<Class<? extends Annotation>, Validator> validators = new HashMap<>();
+    private static final Map<Class<? extends Annotation>, Validator<Annotation>> validators = new HashMap<>();
 
     static {
         registerValidator(ClassValidator.class, new ClassValidatorImpl());
@@ -31,8 +29,9 @@ public class Validators {
      *
      * @param <T> The validator type.
      */
+    @SuppressWarnings("unchecked")
     public static <T extends Annotation> void registerValidator(@NonNull Class<T> annotation, @NonNull Validator<T> validator) {
-        validators.put(annotation, validator);
+        validators.put(annotation, (Validator<Annotation>) validator);
     }
 
     /**
@@ -53,7 +52,7 @@ public class Validators {
      * @return True if the class is valid, otherwise false.
      */
     public static boolean validate(@NonNull Class<?> clazz, @NonNull Element element) {
-        for (Map.Entry<Class<? extends Annotation>, Validator> entry : validators.entrySet()) {
+        for (Map.Entry<Class<? extends Annotation>, Validator<Annotation>> entry : validators.entrySet()) {
             final var annotation = clazz.getAnnotation(entry.getKey());
             if (!validate(annotation, entry.getValue(), element)) {
                 return false;
@@ -72,7 +71,7 @@ public class Validators {
      * @return True if the class is valid, otherwise false.
      */
     public static boolean validate(@NonNull Class<?> clazz, @NonNull Elements elements) {
-        for (Map.Entry<Class<? extends Annotation>, Validator> entry : validators.entrySet()) {
+        for (Map.Entry<Class<? extends Annotation>, Validator<Annotation>> entry : validators.entrySet()) {
             final var annotation = clazz.getAnnotation(entry.getKey());
             if (!validate(annotation, entry.getValue(), elements)) {
                 return false;
@@ -91,9 +90,9 @@ public class Validators {
      * @return True if the field is valid, otherwise false.
      */
     public static boolean validate(@NonNull Field field, @NonNull Element element) {
-        for (Map.Entry<Class<? extends Annotation>, Validator> entry : validators.entrySet()) {
+        for (Map.Entry<Class<? extends Annotation>, Validator<Annotation>> entry : validators.entrySet()) {
             Annotation annotation = field.getAnnotation(entry.getKey());
-            if (validate(annotation, entry.getValue(), element)) {
+            if (!validate(annotation, entry.getValue(), element)) {
                 return false;
             }
         }
@@ -110,9 +109,9 @@ public class Validators {
      * @return True if the field is valid, otherwise false.
      */
     public static boolean validate(@NonNull Field field, @NonNull Elements elements) {
-        for (Map.Entry<Class<? extends Annotation>, Validator> entry : validators.entrySet()) {
+        for (Map.Entry<Class<? extends Annotation>, Validator<Annotation>> entry : validators.entrySet()) {
             Annotation annotation = field.getAnnotation(entry.getKey());
-            if (validate(annotation, entry.getValue(), elements)) {
+            if (!validate(annotation, entry.getValue(), elements)) {
                 return false;
             }
         }

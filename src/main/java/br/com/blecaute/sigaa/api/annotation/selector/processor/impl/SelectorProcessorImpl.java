@@ -4,35 +4,20 @@ import br.com.blecaute.sigaa.api.annotation.selector.Selector;
 import br.com.blecaute.sigaa.api.annotation.selector.processor.Processor;
 import br.com.blecaute.sigaa.api.annotation.validator.Validators;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jsoup.nodes.Element;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 
 public class SelectorProcessorImpl implements Processor<Selector> {
 
-    private final Map<String, Element> parents = new HashMap<>();
-
-    @Override @SneakyThrows
-    public void process(@NotNull Object object, @NotNull Field field, @NotNull Selector selector, @NotNull Element document) {
-        final var value = parse(field, selector, document);
-        if (value != null) {
-            field.set(object, value);
-        }
-    }
-
     @Override
-    public Object parse(@NotNull Field field, @NotNull Selector selector, @NotNull Element document) {
-        document = Objects.requireNonNullElse(findParent(selector, document), document);
-
+    public Object process(@NonNull Field field, @NonNull Selector selector, @NonNull Element document) {
         var value = "";
         if (selector.first()) {
             final var element = document.selectFirst(selector.value());
@@ -66,22 +51,6 @@ public class SelectorProcessorImpl implements Processor<Selector> {
         }
 
         return value;
-    }
-
-    @Nullable
-    private Element findParent(@NotNull Selector selector, @NotNull Element element) {
-        Element parent = null;
-        if (!selector.parent().isBlank()) {
-            parent = parents.get(selector.parent());
-            if (parent == null) {
-                parent = element.selectFirst(selector.parent());
-                if (parent != null) {
-                    parents.put(selector.parent(), element);
-                }
-            }
-        }
-
-        return parent;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

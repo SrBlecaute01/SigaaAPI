@@ -1,4 +1,4 @@
-package br.com.blecaute.sigaa.api.annotation.validator.annotation;
+package br.com.blecaute.sigaa.api.annotation.validator;
 
 import org.intellij.lang.annotations.Language;
 
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates which class of a html element
- * is valid for that field.
+ * is valid for that field or class.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.TYPE})

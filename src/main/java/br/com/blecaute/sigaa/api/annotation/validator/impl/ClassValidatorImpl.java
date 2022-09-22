@@ -1,6 +1,6 @@
 package br.com.blecaute.sigaa.api.annotation.validator.impl;
 
-import br.com.blecaute.sigaa.api.annotation.validator.annotation.ClassValidator;
+import br.com.blecaute.sigaa.api.annotation.validator.ClassValidator;
 import br.com.blecaute.sigaa.api.annotation.validator.Validator;
 import lombok.NonNull;
 import org.jsoup.nodes.Element;

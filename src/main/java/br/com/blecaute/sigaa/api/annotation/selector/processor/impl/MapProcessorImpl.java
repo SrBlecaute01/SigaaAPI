@@ -3,6 +3,8 @@ package br.com.blecaute.sigaa.api.annotation.selector.processor.impl;
 import br.com.blecaute.sigaa.api.annotation.selector.MapSelector;
 import br.com.blecaute.sigaa.api.annotation.selector.processor.Processor;
 import br.com.blecaute.sigaa.api.annotation.validator.Validators;
+import br.com.blecaute.sigaa.api.mapper.Mappers;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.internal.StringUtil;
@@ -17,13 +19,8 @@ import java.util.regex.Pattern;
 
 public class MapProcessorImpl implements Processor<MapSelector> {
 
-    @Override @SneakyThrows
-    public void process(@NotNull Object object, @NotNull Field field, @NotNull MapSelector mapSelector, @NotNull Element document) {
-        field.set(object, parse(field, mapSelector, document));
-    }
-
-    @Override @SneakyThrows
-    public Object parse(@NotNull Field field, @NotNull MapSelector mapSelector, @NotNull Element document) {
+    @Override
+    public Object process(@NonNull Field field, @NonNull MapSelector mapSelector, @NonNull Element document) {
         final var keyAnnotation = mapSelector.value().getAnnotation(MapSelector.Key.class);
         if (keyAnnotation == null) {
             throw new IllegalArgumentException("The key of map selector must be present");
@@ -53,13 +50,9 @@ public class MapProcessorImpl implements Processor<MapSelector> {
     private void process(MapSelector.Key annotation, Class<?> clazz, Element element, Map<String, Object> map) {
         if (!Validators.validate(clazz, element)) return;
 
-        final var object = clazz.getConstructor().newInstance();
-        Processor.process(object, element);
-
-        var key = "";
-
+        final var object = Mappers.map(clazz, element);
         final var keyElement = element.selectFirst(annotation.value());
-        key = keyElement == null ? null : keyElement.text();
+        final var key = keyElement == null ? null : keyElement.text();
 
         if (StringUtil.isBlank(key)) {
             try {
