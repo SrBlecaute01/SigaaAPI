@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("rawtypes")
-public class ValidatorMap {
+public class Validators {
 
     private static final Map<Class<? extends Annotation>, Validator> validators = new HashMap<>();
 

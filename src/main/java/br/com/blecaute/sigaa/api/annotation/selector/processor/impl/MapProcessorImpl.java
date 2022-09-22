@@ -1,8 +1,8 @@
-package br.com.blecaute.sigaa.api.processor.impl;
+package br.com.blecaute.sigaa.api.annotation.selector.processor.impl;
 
 import br.com.blecaute.sigaa.api.annotation.selector.MapSelector;
-import br.com.blecaute.sigaa.api.processor.Processor;
-import br.com.blecaute.sigaa.api.annotation.validator.ValidatorMap;
+import br.com.blecaute.sigaa.api.annotation.selector.processor.Processor;
+import br.com.blecaute.sigaa.api.annotation.validator.Validators;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.internal.StringUtil;
@@ -51,7 +51,7 @@ public class MapProcessorImpl implements Processor<MapSelector> {
 
     @SneakyThrows
     private void process(MapSelector.Key annotation, Class<?> clazz, Element element, Map<String, Object> map) {
-        if (!ValidatorMap.validate(clazz, element)) return;
+        if (!Validators.validate(clazz, element)) return;
 
         final var object = clazz.getConstructor().newInstance();
         Processor.process(object, element);

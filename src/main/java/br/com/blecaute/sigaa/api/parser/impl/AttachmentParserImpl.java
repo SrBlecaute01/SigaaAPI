@@ -3,7 +3,7 @@ package br.com.blecaute.sigaa.api.parser.impl;
 import br.com.blecaute.sigaa.api.model.classroom.attachment.Attachment;
 import br.com.blecaute.sigaa.api.model.classroom.attachment.AttachmentType;
 import br.com.blecaute.sigaa.api.parser.AttachmentParser;
-import br.com.blecaute.sigaa.api.processor.Processor;
+import br.com.blecaute.sigaa.api.annotation.selector.processor.Processor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Element;

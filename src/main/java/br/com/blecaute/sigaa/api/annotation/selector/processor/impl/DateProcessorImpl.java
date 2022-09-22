@@ -1,7 +1,7 @@
-package br.com.blecaute.sigaa.api.processor.impl;
+package br.com.blecaute.sigaa.api.annotation.selector.processor.impl;
 
 import br.com.blecaute.sigaa.api.annotation.selector.DateSelector;
-import br.com.blecaute.sigaa.api.processor.Processor;
+import br.com.blecaute.sigaa.api.annotation.selector.processor.Processor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Element;

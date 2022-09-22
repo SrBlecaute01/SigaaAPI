@@ -1,8 +1,8 @@
-package br.com.blecaute.sigaa.api.processor.impl;
+package br.com.blecaute.sigaa.api.annotation.selector.processor.impl;
 
 import br.com.blecaute.sigaa.api.annotation.selector.Selector;
-import br.com.blecaute.sigaa.api.processor.Processor;
-import br.com.blecaute.sigaa.api.annotation.validator.ValidatorMap;
+import br.com.blecaute.sigaa.api.annotation.selector.processor.Processor;
+import br.com.blecaute.sigaa.api.annotation.validator.Validators;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -36,7 +36,7 @@ public class SelectorProcessorImpl implements Processor<Selector> {
         var value = "";
         if (selector.first()) {
             final var element = document.selectFirst(selector.value());
-            if (element == null || !ValidatorMap.validate(field, element)) return null;
+            if (element == null || !Validators.validate(field, element)) return null;
 
             if (selector.attr().isBlank()) {
                 value = selector.ownText() ? element.ownText() : element.text();
@@ -47,7 +47,7 @@ public class SelectorProcessorImpl implements Processor<Selector> {
 
         } else {
             final var elements = document.select(selector.value());
-            if (elements.isEmpty() || !ValidatorMap.validate(field, elements)) return null;
+            if (elements.isEmpty() || !Validators.validate(field, elements)) return null;
 
             value = selector.attr().isBlank() ? elements.text() : elements.attr(selector.attr());
         }

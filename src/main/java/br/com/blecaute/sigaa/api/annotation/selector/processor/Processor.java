@@ -1,9 +1,13 @@
-package br.com.blecaute.sigaa.api.processor;
+package br.com.blecaute.sigaa.api.annotation.selector.processor;
 
 import br.com.blecaute.sigaa.api.annotation.selector.CollectionSelector;
 import br.com.blecaute.sigaa.api.annotation.selector.DateSelector;
 import br.com.blecaute.sigaa.api.annotation.selector.MapSelector;
 import br.com.blecaute.sigaa.api.annotation.selector.Selector;
+import br.com.blecaute.sigaa.api.annotation.selector.processor.impl.CollectionProcessorImpl;
+import br.com.blecaute.sigaa.api.annotation.selector.processor.impl.DateProcessorImpl;
+import br.com.blecaute.sigaa.api.annotation.selector.processor.impl.MapProcessorImpl;
+import br.com.blecaute.sigaa.api.annotation.selector.processor.impl.SelectorProcessorImpl;
 import br.com.blecaute.sigaa.api.processor.impl.*;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +16,6 @@ import org.jsoup.nodes.Element;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.List;
 
 public interface Processor<T extends Annotation> {
 
@@ -39,6 +42,7 @@ public interface Processor<T extends Annotation> {
                 field.setAccessible(true);
                 fields.add(field);
             }
+
             clazz = clazz.getSuperclass();
         }
 
@@ -66,7 +70,6 @@ public interface Processor<T extends Annotation> {
                 collectionProcessor.process(t, field, collectionSelector, document);
             }
         }
-
 
         return t;
     }

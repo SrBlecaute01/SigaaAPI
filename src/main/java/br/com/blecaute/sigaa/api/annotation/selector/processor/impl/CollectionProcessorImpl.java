@@ -1,8 +1,8 @@
-package br.com.blecaute.sigaa.api.processor.impl;
+package br.com.blecaute.sigaa.api.annotation.selector.processor.impl;
 
 import br.com.blecaute.sigaa.api.annotation.selector.CollectionSelector;
+import br.com.blecaute.sigaa.api.annotation.selector.processor.Processor;
 import br.com.blecaute.sigaa.api.model.classroom.Classroom;
-import br.com.blecaute.sigaa.api.processor.Processor;
 import br.com.blecaute.sigaa.api.parser.ParserMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
