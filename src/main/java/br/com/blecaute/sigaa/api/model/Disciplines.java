@@ -3,8 +3,7 @@ package br.com.blecaute.sigaa.api.model;
 import br.com.blecaute.sigaa.api.annotation.selector.CollectionSelector;
 import br.com.blecaute.sigaa.api.annotation.selector.MapSelector;
 import br.com.blecaute.sigaa.api.annotation.selector.Selector;
-import br.com.blecaute.sigaa.api.annotation.validator.ClassValidator;
-import br.com.blecaute.sigaa.api.model.classroom.attachment.ForumAttachment;
+import br.com.blecaute.sigaa.api.annotation.validator.annotation.ClassValidator;
 import lombok.*;
 import org.jetbrains.annotations.Unmodifiable;
 
