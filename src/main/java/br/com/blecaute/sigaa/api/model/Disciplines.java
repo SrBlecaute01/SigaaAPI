@@ -4,6 +4,7 @@ import br.com.blecaute.sigaa.api.annotation.selector.CollectionSelector;
 import br.com.blecaute.sigaa.api.annotation.selector.MapSelector;
 import br.com.blecaute.sigaa.api.annotation.selector.Selector;
 import br.com.blecaute.sigaa.api.annotation.validator.ClassValidator;
+import br.com.blecaute.sigaa.api.model.classroom.attachment.ForumAttachment;
 import lombok.*;
 import org.jetbrains.annotations.Unmodifiable;
 
@@ -45,6 +46,7 @@ public class Disciplines {
             return Collections.unmodifiableCollection(disciplines.values());
         }
 
+        @SneakyThrows
         public Optional<Discipline> getDiscipline(@NonNull String code) {
             return Optional.ofNullable(disciplines.get(code));
         }
@@ -57,7 +59,7 @@ public class Disciplines {
     @ClassValidator("linhaPar|linhaImpar")
     public static class Discipline {
 
-        @Selector(value = "td:nth-child(6) > a", attribute = "onclick", exclusion = "(.*j_id_jsp_1186832992_2:)|('.*)")
+        @Selector(value = "td:nth-child(6) > a", attr = "onclick", exclusion = "(.*j_id_jsp_1186832992_2:)|('.*)")
         private String id;
 
         @Selector(value = "td:nth-child(1)", exclusion = "\\s.*")

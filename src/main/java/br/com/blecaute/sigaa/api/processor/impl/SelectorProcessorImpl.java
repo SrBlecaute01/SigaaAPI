@@ -31,18 +31,25 @@ public class SelectorProcessorImpl implements Processor<Selector> {
 
     @Override
     public Object parse(@NotNull Field field, @NotNull Selector selector, @NotNull Element document) {
-        if (!ValidatorMap.validate(field, document)) return null;
-
-        final var parent = findParent(selector, document);
-        final var element = Objects.requireNonNullElse(parent, document).selectFirst(selector.value());
-
-        if (element == null) return null;
+        document = Objects.requireNonNullElse(findParent(selector, document), document);
 
         var value = "";
-        if (selector.attribute().isBlank()) {
-            value = selector.ownText() ? element.ownText() : element.text();
+        if (selector.first()) {
+            final var element = document.selectFirst(selector.value());
+            if (element == null || !ValidatorMap.validate(field, element)) return null;
+
+            if (selector.attr().isBlank()) {
+                value = selector.ownText() ? element.ownText() : element.text();
+
+            } else {
+                value = element.attr(selector.attr());
+            }
+
         } else {
-            value = element.attr(selector.attribute());
+            final var elements = document.select(selector.value());
+            if (elements.isEmpty() || !ValidatorMap.validate(field, elements)) return null;
+
+            value = selector.attr().isBlank() ? elements.text() : elements.attr(selector.attr());
         }
 
         if (!selector.exclusion().isBlank()) {

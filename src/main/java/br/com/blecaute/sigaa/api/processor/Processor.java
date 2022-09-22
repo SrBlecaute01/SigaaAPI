@@ -11,6 +11,8 @@ import org.jsoup.nodes.Element;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public interface Processor<T extends Annotation> {
 
@@ -29,9 +31,18 @@ public interface Processor<T extends Annotation> {
         final var mapProcessor = new MapProcessorImpl();
         final var collectionProcessor = new CollectionProcessorImpl();
 
-        for (Field field : t.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
+        final var fields = new ArrayList<Field>();
 
+        var clazz = t.getClass();
+        while (clazz != null) {
+            for (Field field : clazz.getDeclaredFields()) {
+                field.setAccessible(true);
+                fields.add(field);
+            }
+            clazz = clazz.getSuperclass();
+        }
+
+        for (Field field : fields) {
             final var selector = field.getAnnotation(Selector.class);
             if (selector != null) {
                 selectorProcessor.process(t, field, selector, document);
@@ -55,6 +66,7 @@ public interface Processor<T extends Annotation> {
                 collectionProcessor.process(t, field, collectionSelector, document);
             }
         }
+
 
         return t;
     }

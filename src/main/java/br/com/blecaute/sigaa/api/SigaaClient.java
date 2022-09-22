@@ -3,6 +3,7 @@ package br.com.blecaute.sigaa.api;
 import br.com.blecaute.sigaa.api.model.Bulletin;
 import br.com.blecaute.sigaa.api.model.Disciplines;
 import br.com.blecaute.sigaa.api.model.User;
+import br.com.blecaute.sigaa.api.model.classroom.Classroom;
 import br.com.blecaute.sigaa.api.parser.ParserMap;
 import br.com.blecaute.sigaa.api.response.*;
 import lombok.AccessLevel;
@@ -75,6 +76,17 @@ public class SigaaClient {
             } catch (IOException exception) {
                 throw new CompletionException(exception);
             }
+        });
+    }
+
+    public CompletableFuture<Classroom> getVirtualClass(@NonNull Disciplines.Discipline discipline) {
+        return getVirtualClass(discipline.getId());
+    }
+
+    public CompletableFuture<Classroom> getVirtualClass(@NonNull String id) {
+        return CompletableFuture.supplyAsync(() -> {
+            VirtualClassResponse response = ResponseType.VIRTUAL_CLASS.getResponse();
+            return ParserMap.parse(Classroom.class, response.getVirtualClass(httpClient, cookie, id));
         });
     }
 

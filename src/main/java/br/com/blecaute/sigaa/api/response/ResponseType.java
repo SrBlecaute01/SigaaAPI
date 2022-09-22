@@ -11,6 +11,7 @@ public enum ResponseType {
     DISCIPLINES,
     HISTORIC,
     ENROLLMENT_STATEMENT,
+    VIRTUAL_CLASS,
 
     ;
 

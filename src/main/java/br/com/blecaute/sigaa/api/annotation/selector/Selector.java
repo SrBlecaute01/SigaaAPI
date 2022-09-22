@@ -15,11 +15,13 @@ public @interface Selector {
 
     String parent() default "";
 
-    String attribute() default "";
+    String attr() default "";
 
     @Language("RegExp")
     String exclusion() default "";
 
     boolean ownText() default false;
+
+    boolean first() default true;
 
 }

@@ -19,7 +19,7 @@ public class User {
     @Selector(parent = "#perfil-docente", value = "p.info-docente")
     private String info;
 
-    @Selector(parent = "#perfil-docente", value = "div.pessoal-docente > div.foto > img", attribute = "src")
+    @Selector(parent = "#perfil-docente", value = "div.pessoal-docente > div.foto > img", attr = "src")
     private String avatar;
 
     @Selector("#info-usuario > p.periodo-atual > strong")
