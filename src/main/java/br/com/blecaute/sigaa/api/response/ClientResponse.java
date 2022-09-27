@@ -69,32 +69,31 @@ public interface ClientResponse {
 
     @SneakyThrows
     default void walk(@NonNull SigaaClient client, @Nullable RequestBody body, @NonNull ResponseType... type) {
-        ResponseType end = type[type.length - 1];
-        if (client.getLastResponse() == end) return;
+        final var responseType = type[type.length - 1];
+        if (client.getLastResponse() == responseType) return;
 
         for (int index = 0; index < type.length - 1; index++) {
             walk(client, body, type[index]);
         }
 
-        final var response = getResponse(client.getHttpClient(), client.getCookie(), body);
-        if (!response.isSuccessful() || response.code() != 200) {
-            throw new ConnectionFailureException();
+        final var clientResponse = responseType.getResponse();
+        try (final var response = clientResponse.getResponse(client, body)) {
+            if (!response.isSuccessful() || response.code() != 200) {
+                throw new ConnectionFailureException();
+            }
+
+            try (final var responseBody = response.body()) {
+                if (responseBody == null) throw new ConnectionFailureException();
+
+                final var text = responseBody.string();
+                if (text.contains("Sua sessão foi expirada")) {
+                    throw new ConnectionFailureException();
+                }
+
+                client.setLastResponse(responseType);
+                client.setViewState(getViewState(text));
+            }
         }
-
-        final var page = response.body();
-        if (page == null) {
-            throw new ConnectionFailureException();
-        }
-
-        final var text = page.string();
-        if (text.contains("Sua sessão foi expirada")) {
-            throw new ConnectionFailureException();
-        }
-
-        client.setViewState(getViewState(text));
-        client.setLastResponse(end);
-
-        response.close();
     }
 
     default String getViewState(@NonNull Element element) {

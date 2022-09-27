@@ -18,8 +18,7 @@ public class StudentResponseImpl implements StudentResponse {
     @Override @NotNull @SneakyThrows
     public Response getResponse(@NotNull OkHttpClient client, @Nullable String cookie, @Nullable RequestBody body) {
         final var builder = new Request.Builder()
-                .url("https://sigaa.ifal.edu.br/sigaa/portais/discente/discente.jsf")
-                .header("Content-Type", "application/x-www-form-urlencoded")
+                .url("https://sigaa.ifal.edu.br/sigaa/verPortalDiscente.do?")
                 .header("Cookie", "JSESSIONID=" + cookie);
 
         if (body != null) {
@@ -31,7 +30,7 @@ public class StudentResponseImpl implements StudentResponse {
 
     @Override
     public Document getStudent(@NonNull SigaaClient client) {
-        try (final var response  =getResponse(client, null)) {
+        try (final var response  = getResponse(client, null)) {
             final var document = validate(response);
 
             client.setViewState(getViewState(document));

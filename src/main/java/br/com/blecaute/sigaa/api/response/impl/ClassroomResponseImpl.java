@@ -16,7 +16,6 @@ public class ClassroomResponseImpl implements ClassroomResponse {
     public Response getResponse(@NotNull OkHttpClient client, @Nullable String cookie, @Nullable RequestBody body) {
         final var builder = new Request.Builder()
                 .url("https://sigaa.ifal.edu.br/sigaa/portais/discente/turmas.jsf")
-                .header("Content-Type", "application/x-www-form-urlencoded")
                 .header("Cookie", "JSESSIONID=" + cookie)
                 .header("Referer", "https://sigaa.ifal.edu.br/sigaa/portais/discente/turmas.jsf");
 
@@ -29,7 +28,7 @@ public class ClassroomResponseImpl implements ClassroomResponse {
 
     @Override
     public Document getClassroom(@NonNull SigaaClient client, @NotNull String id) {
-        walk(client, null, ResponseType.STUDENT, ResponseType.DISCIPLINES);
+        walk(client, null, ResponseType.DISCIPLINES);
 
         final var formBody = new FormBody.Builder()
                 .add("j_id_jsp_1186832992_2", "j_id_jsp_1186832992_2")

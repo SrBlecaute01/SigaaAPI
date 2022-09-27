@@ -38,7 +38,6 @@ public class EnrollmentStatementResponseImpl implements EnrollmentStatementRespo
         try (final var response = getResponse(client, formBody);
              final var body = validate(response, "application/pdf")) {
 
-            client.setViewState(getViewState(body));
             client.setLastResponse(ResponseType.STUDENT);
 
             return body.bytes();

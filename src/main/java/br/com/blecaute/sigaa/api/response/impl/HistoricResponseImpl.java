@@ -10,11 +10,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class HistoricResponseImpl implements HistoricResponse {
 
-    @Override @NotNull  @SneakyThrows
+    @Override @NotNull @SneakyThrows
     public Response getResponse(@NotNull OkHttpClient client, @Nullable String cookie, @Nullable RequestBody body) {
         final var builder = new Request.Builder()
                 .url("https://sigaa.ifal.edu.br/sigaa/portais/discente/discente.jsf")
                 .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("Origin", "https://sigaa.ifal.edu.br")
                 .header("Cookie", "JSESSIONID=" + cookie)
                 .header("Referer", "https://sigaa.ifal.edu.br/sigaa/portais/discente/discente.jsf");
 
@@ -38,10 +39,11 @@ public class HistoricResponseImpl implements HistoricResponse {
         try (final var response = getResponse(client, formBody);
              final var body = validate(response, "application/pdf")) {
 
-            client.setViewState(getViewState(body));
+            final var bytes = body.bytes();
+
             client.setLastResponse(ResponseType.STUDENT);
 
-            return body.bytes();
+            return bytes;
         }
     }
 }

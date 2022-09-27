@@ -26,7 +26,7 @@ public class SigaaClient {
     private final OkHttpClient httpClient;
     private final String cookie;
 
-    private final AtomicReference<String> viewState = new AtomicReference<>("j_id2");
+    private final AtomicReference<String> viewState = new AtomicReference<>("j_id1");
     private final AtomicReference<ResponseType> lastResponse = new AtomicReference<>(ResponseType.STUDENT);
 
     public String getViewState() {
