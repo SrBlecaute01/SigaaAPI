@@ -18,7 +18,8 @@ public class ResponseMap {
         RESPONSES.put(ResponseType.DISCIPLINES, new DisciplinesResponseImpl());
         RESPONSES.put(ResponseType.HISTORIC, new HistoricResponseImpl());
         RESPONSES.put(ResponseType.ENROLLMENT_STATEMENT, new EnrollmentStatementResponseImpl());
-        RESPONSES.put(ResponseType.VIRTUAL_CLASS, new VirtualClassResponseImpl());
+        RESPONSES.put(ResponseType.CLASSROOM, new ClassroomResponseImpl());
+        RESPONSES.put(ResponseType.STUDENT, new StudentResponseImpl());
     }
 
     @NotNull

@@ -1,6 +1,9 @@
 package br.com.blecaute.sigaa.api.response.impl;
 
+import br.com.blecaute.sigaa.api.SigaaClient;
 import br.com.blecaute.sigaa.api.response.EnrollmentStatementResponse;
+import br.com.blecaute.sigaa.api.response.ResponseType;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
@@ -23,13 +26,20 @@ public class EnrollmentStatementResponseImpl implements EnrollmentStatementRespo
     }
 
     @Override @SneakyThrows
-    public byte[] getEnrollmentStatement(@NotNull OkHttpClient client, @Nullable String cookie) {
+    public byte[] getEnrollmentStatement(@NonNull SigaaClient client) {
+        walk(client, null, ResponseType.STUDENT);
+
         final var formBody = new FormBody.Builder()
                 .add("menu:form_menu_discente", "menu:form_menu_discente")
                 .add("jscook_action", "menu_form_menu_discente_j_id_jsp_1051041857_101_menu:A]#{ declaracaoVinculo.emitirDeclaracao }")
-                .add("javax.faces.ViewState", "j_id1")
+                .add("javax.faces.ViewState", client.getViewState())
                 .build();
 
-        return validate(getResponse(client, cookie, formBody), "application/pdf").bytes();
+        final var body = validate(getResponse(client.getHttpClient(), client.getCookie(), formBody), "application/pdf");
+
+        client.setViewState(getViewState(body));
+        client.setLastResponse(ResponseType.STUDENT);
+
+        return body.bytes();
     }
 }

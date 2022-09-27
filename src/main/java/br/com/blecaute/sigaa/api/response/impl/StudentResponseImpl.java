@@ -1,8 +1,8 @@
 package br.com.blecaute.sigaa.api.response.impl;
 
 import br.com.blecaute.sigaa.api.SigaaClient;
-import br.com.blecaute.sigaa.api.response.DisciplinesResponse;
 import br.com.blecaute.sigaa.api.response.ResponseType;
+import br.com.blecaute.sigaa.api.response.StudentResponse;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
@@ -13,15 +13,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jsoup.nodes.Document;
 
-public class DisciplinesResponseImpl implements DisciplinesResponse {
+public class StudentResponseImpl implements StudentResponse {
 
     @Override @NotNull @SneakyThrows
     public Response getResponse(@NotNull OkHttpClient client, @Nullable String cookie, @Nullable RequestBody body) {
         final var builder = new Request.Builder()
-                .url("https://sigaa.ifal.edu.br/sigaa/portais/discente/turmas.jsf")
+                .url("https://sigaa.ifal.edu.br/sigaa/portais/discente/discente.jsf")
                 .header("Content-Type", "application/x-www-form-urlencoded")
-                .header("Cookie", "JSESSIONID=" + cookie)
-                .header("Referer", "https://sigaa.ifal.edu.br/sigaa/portais/discente/discente.jsf");
+                .header("Cookie", "JSESSIONID=" + cookie);
 
         if (body != null) {
             builder.post(body);
@@ -31,14 +30,13 @@ public class DisciplinesResponseImpl implements DisciplinesResponse {
     }
 
     @Override
-    public Document getDisciplines(@NonNull SigaaClient client) {
-        walk(client, null, ResponseType.STUDENT);
-
+    public Document getStudent(@NonNull SigaaClient client) {
         final var document = validate(getResponse(client.getHttpClient(), client.getCookie(), null));
 
         client.setViewState(getViewState(document));
-        client.setLastResponse(ResponseType.DISCIPLINES);
+        client.setLastResponse(ResponseType.STUDENT);
 
         return document;
     }
+
 }

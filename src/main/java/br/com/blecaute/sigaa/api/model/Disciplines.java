@@ -34,7 +34,6 @@ public class Disciplines {
     public static class Period {
 
         @Selector("td")
-        @ClassValidator("(?!linhaPar|linhaImpar)")
         private String period;
 
         @MapSelector(Discipline.class)

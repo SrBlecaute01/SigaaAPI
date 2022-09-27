@@ -1,5 +1,6 @@
 package br.com.blecaute.sigaa.api.response;
 
+import br.com.blecaute.sigaa.api.SigaaClient;
 import br.com.blecaute.sigaa.api.exception.ConnectionFailureException;
 import br.com.blecaute.sigaa.api.exception.ExpiredSessionException;
 import br.com.blecaute.sigaa.api.exception.InvalidMediaException;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.util.Objects;
 
@@ -58,6 +60,53 @@ public interface ClientResponse {
         }
 
         return body;
+    }
+
+    @SneakyThrows
+    default void walk(@NonNull SigaaClient client, @Nullable RequestBody body, @NonNull ResponseType... type) {
+        ResponseType end = type[type.length - 1];
+        if (client.getLastResponse() == end) return;
+
+        for (int index = 0; index < type.length - 1; index++) {
+            walk(client, body, type[index]);
+            Thread.sleep(1000);
+        }
+
+        final var response = getResponse(client.getHttpClient(), client.getCookie(), body);
+        if (!response.isSuccessful() || response.code() != 200) {
+            throw new ConnectionFailureException();
+        }
+
+        final var page = response.body();
+        if (page == null) {
+            throw new ConnectionFailureException();
+        }
+
+        final var text = page.string();
+        if (text.contains("Sua sessão foi expirada")) {
+            throw new ConnectionFailureException();
+        }
+
+        client.setViewState(getViewState(text));
+        client.setLastResponse(end);
+
+        response.close();
+    }
+
+    default String getViewState(@NonNull Element element) {
+        final var state = element.getElementById("javax.faces.ViewState");
+        return state != null ? state.attr("value") : "";
+    }
+
+    @SneakyThrows
+    default String getViewState(@NonNull ResponseBody body) {
+        return getViewState(body.string());
+    }
+
+    @SneakyThrows
+    default String getViewState(@NonNull String body) {
+        final var states = body.split("id=\"javax.faces.ViewState\" value=\"");
+        return states[1].split("\" ")[0];
     }
 
 }

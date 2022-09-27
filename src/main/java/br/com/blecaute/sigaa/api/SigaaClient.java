@@ -2,14 +2,11 @@ package br.com.blecaute.sigaa.api;
 
 import br.com.blecaute.sigaa.api.model.Bulletin;
 import br.com.blecaute.sigaa.api.model.Disciplines;
-import br.com.blecaute.sigaa.api.model.User;
 import br.com.blecaute.sigaa.api.model.classroom.Classroom;
 import br.com.blecaute.sigaa.api.mapper.Mappers;
 import br.com.blecaute.sigaa.api.response.*;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.Setter;
 import okhttp3.OkHttpClient;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Data
 public class SigaaClient {
@@ -28,27 +26,43 @@ public class SigaaClient {
     private final OkHttpClient httpClient;
     private final String cookie;
 
-    @Setter(AccessLevel.PROTECTED)
-    private User user;
+    private final AtomicReference<String> viewState = new AtomicReference<>("j_id2");
+    private final AtomicReference<ResponseType> lastResponse = new AtomicReference<>(ResponseType.STUDENT);
+
+    public String getViewState() {
+        return viewState.get();
+    }
+
+    public void setViewState(@NonNull String viewState) {
+        this.viewState.set(viewState);
+    }
+
+    public ResponseType getLastResponse() {
+        return lastResponse.get();
+    }
+
+    public void setLastResponse(@NonNull ResponseType lastResponse) {
+        this.lastResponse.set(lastResponse);
+    }
 
     public CompletableFuture<Bulletin> getBulletin() {
         return CompletableFuture.supplyAsync(() -> {
-            BulletinResponse response = ResponseType.BULLETIN.getResponse();
-            return Mappers.map(Bulletin.class, response.getBulletin(httpClient, cookie));
+            final var response = ResponseType.BULLETIN.getResponse(BulletinResponse.class);
+            return Mappers.map(Bulletin.class, response.getBulletin(this));
         });
     }
 
     public CompletableFuture<Disciplines> getDisciplines() {
         return CompletableFuture.supplyAsync(() -> {
-            DisciplinesResponse response = ResponseType.DISCIPLINES.getResponse();
-            return Mappers.map(Disciplines.class, response.getDisciplines(httpClient, cookie));
+            final var response = ResponseType.DISCIPLINES.getResponse(DisciplinesResponse.class);
+            return Mappers.map(Disciplines.class, response.getDisciplines(this));
         });
     }
 
     public CompletableFuture<byte[]> getHistoric() {
         return CompletableFuture.supplyAsync(() -> {
-            HistoricResponse response = ResponseType.HISTORIC.getResponse();
-            return response.getHistoric(httpClient, cookie);
+            final var response = ResponseType.HISTORIC.getResponse(HistoricResponse.class);
+            return response.getHistoric(this);
         });
     }
 
@@ -64,8 +78,8 @@ public class SigaaClient {
 
     public CompletableFuture<byte[]> getEnrollmentStatement() {
         return CompletableFuture.supplyAsync(() -> {
-            EnrollmentStatementResponse response = ResponseType.ENROLLMENT_STATEMENT.getResponse();
-            return response.getEnrollmentStatement(httpClient, cookie);
+            final var response = ResponseType.ENROLLMENT_STATEMENT.getResponse(EnrollmentStatementResponse.class);
+            return response.getEnrollmentStatement(this);
         });
     }
 
@@ -79,14 +93,14 @@ public class SigaaClient {
         });
     }
 
-    public CompletableFuture<Classroom> getVirtualClass(@NonNull Disciplines.Discipline discipline) {
-        return getVirtualClass(discipline.getId());
+    public CompletableFuture<Classroom> getClassroom(@NonNull Disciplines.Discipline discipline) {
+        return getClassroom(discipline.getId());
     }
 
-    public CompletableFuture<Classroom> getVirtualClass(@NonNull String id) {
+    public CompletableFuture<Classroom> getClassroom(@NonNull String id) {
         return CompletableFuture.supplyAsync(() -> {
-            VirtualClassResponse response = ResponseType.VIRTUAL_CLASS.getResponse();
-            return Mappers.map(Classroom.class, response.getVirtualClass(httpClient, cookie, id));
+            final var response = ResponseType.CLASSROOM.getResponse(ClassroomResponse.class);
+            return Mappers.map(Classroom.class, response.getClassroom(this, id));
         });
     }
 
