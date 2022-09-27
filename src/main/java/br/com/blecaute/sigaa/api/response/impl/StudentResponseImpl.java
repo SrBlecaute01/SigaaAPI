@@ -31,12 +31,14 @@ public class StudentResponseImpl implements StudentResponse {
 
     @Override
     public Document getStudent(@NonNull SigaaClient client) {
-        final var document = validate(getResponse(client.getHttpClient(), client.getCookie(), null));
+        try (final var response  =getResponse(client, null)) {
+            final var document = validate(response);
 
-        client.setViewState(getViewState(document));
-        client.setLastResponse(ResponseType.STUDENT);
+            client.setViewState(getViewState(document));
+            client.setLastResponse(ResponseType.STUDENT);
 
-        return document;
+            return document;
+        }
     }
 
 }

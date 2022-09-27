@@ -29,6 +29,11 @@ public interface ClientResponse {
         return getResponse(client, null, null);
     }
 
+    @NotNull @SneakyThrows
+    default Response getResponse(@NonNull SigaaClient client, @Nullable RequestBody body) {
+        return getResponse(client.getHttpClient(), client.getCookie(), body);
+    }
+
     @SneakyThrows
     default Document validate(@NonNull Response response) {
         if (!response.isSuccessful() || response.code() != 200) {
@@ -69,7 +74,6 @@ public interface ClientResponse {
 
         for (int index = 0; index < type.length - 1; index++) {
             walk(client, body, type[index]);
-            Thread.sleep(1000);
         }
 
         final var response = getResponse(client.getHttpClient(), client.getCookie(), body);

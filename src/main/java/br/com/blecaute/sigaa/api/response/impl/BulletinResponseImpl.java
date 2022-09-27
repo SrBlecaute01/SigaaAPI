@@ -36,11 +36,13 @@ public class BulletinResponseImpl implements BulletinResponse {
                 .add("javax.faces.ViewState", client.getViewState())
                 .build();
 
-        final var document = validate(getResponse(client.getHttpClient(), client.getCookie(), formBody));
+        try (final var response = getResponse(client, formBody)) {
+            final var document = validate(response);
 
-        client.setViewState(getViewState(document));
-        client.setLastResponse(ResponseType.BULLETIN);
+            client.setViewState(getViewState(document));
+            client.setLastResponse(ResponseType.BULLETIN);
 
-        return document;
+            return document;
+        }
     }
 }

@@ -35,12 +35,13 @@ public class HistoricResponseImpl implements HistoricResponse {
                 .add("javax.faces.ViewState", client.getViewState())
                 .build();
 
-        final var body = validate(getResponse(client.getHttpClient(), client.getCookie(), formBody), "application/pdf");
-        final var bytes = body.bytes();
+        try (final var response = getResponse(client, formBody);
+             final var body = validate(response, "application/pdf")) {
 
-        client.setViewState(getViewState(body));
-        client.setLastResponse(ResponseType.STUDENT);
+            client.setViewState(getViewState(body));
+            client.setLastResponse(ResponseType.STUDENT);
 
-        return bytes;
+            return body.bytes();
+        }
     }
 }

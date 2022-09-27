@@ -34,11 +34,13 @@ public class DisciplinesResponseImpl implements DisciplinesResponse {
     public Document getDisciplines(@NonNull SigaaClient client) {
         walk(client, null, ResponseType.STUDENT);
 
-        final var document = validate(getResponse(client.getHttpClient(), client.getCookie(), null));
+        try (final var response = getResponse(client, null)) {
+            final var document = validate(response);
 
-        client.setViewState(getViewState(document));
-        client.setLastResponse(ResponseType.DISCIPLINES);
+            client.setViewState(getViewState(document));
+            client.setLastResponse(ResponseType.DISCIPLINES);
 
-        return document;
+            return document;
+        }
     }
 }

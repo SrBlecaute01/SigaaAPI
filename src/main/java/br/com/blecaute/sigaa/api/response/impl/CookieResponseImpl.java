@@ -18,4 +18,11 @@ public class CookieResponseImpl implements CookieResponse {
         return client.newCall(request).execute();
     }
 
+    @Override @NotNull
+    public String getCookie(@NotNull OkHttpClient client) {
+        try (final var response = getResponse(client)) {
+            final var cookies = response.headers().values("Set-Cookie");
+            return cookies.get(0).split(";")[0].split("JSESSIONID=")[1];
+        }
+    }
 }
